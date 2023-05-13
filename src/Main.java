@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Main {
-    static File saveFile = new File("basket.txt");
+    static File saveFile = new File("basket.bin");
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -11,7 +11,7 @@ public class Main {
         int productCount, productNumber;
         Basket basket = null;
         if (saveFile.exists() && saveFile.length() > 0) {
-            basket = Basket.loadFromTxtFile(saveFile);
+            basket = Basket.loadFromBinFile(saveFile);
         } else {
             basket = new Basket(prices, products);
         }
@@ -34,7 +34,7 @@ public class Main {
             productNumber = Integer.parseInt(parts[0]) - 1;
             productCount = Integer.parseInt(parts[1]);
             basket.addToCart(productNumber, productCount);
-            basket.saveTxt(saveFile);
+            basket.saveBin(saveFile);
         }
     }
 }
