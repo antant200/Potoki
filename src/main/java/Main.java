@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Main {
-    static File saveFile = new File("basket.txt");
+    static File saveFile = new File("basket.json");
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -11,10 +11,11 @@ public class Main {
         int productCount, productNumber;
         Basket basket = null;
         if (saveFile.exists() && saveFile.length() > 0) {
-            basket = Basket.loadFromTxtFile(saveFile);
+            basket = Basket.loadFromJSONFile(saveFile);
         } else {
             basket = new Basket(prices, products);
         }
+        ClientLog clientLog = new ClientLog();
 
         while (true) {
             System.out.println("Список доступных продуктов:");
@@ -27,6 +28,7 @@ public class Main {
             if (input.equals("end")) {
                 basket.printCart();
                 System.out.println("Программа завершена!");
+                clientLog.exportAsCSV(new File("log.csv"));
                 break;
             }
 
@@ -34,7 +36,8 @@ public class Main {
             productNumber = Integer.parseInt(parts[0]) - 1;
             productCount = Integer.parseInt(parts[1]);
             basket.addToCart(productNumber, productCount);
-            basket.saveTxt(saveFile);
+            clientLog.log(productNumber,productCount);
+            basket.saveJSON(saveFile);
         }
     }
 }
