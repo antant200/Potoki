@@ -60,4 +60,47 @@ public class Basket {
         }
         return basket;
     }
+
+    public void saveTxt(File textFile) {
+        try (PrintWriter out = new PrintWriter(textFile)) {
+            for (String product : products) {
+                out.print(product + " ");
+            }
+            out.println();
+
+            for (int price : prices) {
+                out.print(price + " ");
+            }
+            out.println();
+
+            for (int quantity : quantities) {
+                out.print(quantity + " ");
+            }
+            out.println();
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Basket loadFromTxtFile(File textFile) {
+        Basket basket = new Basket();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(textFile))) {
+            String productString = bufferedReader.readLine();
+            String priceString = bufferedReader.readLine();
+            String quantStr = bufferedReader.readLine();
+            if (!productString.equals("")) {
+                basket.products = productString.split(" ");
+                basket.prices = Arrays.stream(priceString.split(" "))
+                        .map(Integer::parseInt)
+                        .mapToInt(Integer::intValue).toArray();
+                basket.quantities = Arrays.stream(quantStr.split(" "))
+                        .map(Integer::parseInt)
+                        .mapToInt(Integer::intValue).toArray();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return basket;
+    }
 }
