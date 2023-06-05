@@ -20,7 +20,7 @@ public class Setting {
     final boolean isLog;
     final String logFile;
 
-    public Setting (File xmlFile) throws IOException, SAXException, ParserConfigurationException {
+    public Setting(File xmlFile) throws IOException, SAXException, ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(xmlFile);

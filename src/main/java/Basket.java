@@ -5,9 +5,32 @@ import java.io.*;
 import java.util.Arrays;
 
 public class Basket {
+    public int[] getPrices() {
+        return prices;
+    }
+
+    public String[] getProducts() {
+        return products;
+    }
+
+    public int[] getQuantities() {
+        return quantities;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public int getCurrentPrice() {
+        return currentPrice;
+    }
+
     protected int[] prices;
+    protected int currentPrice;
     protected String[] products;
     protected int[] quantities;
+    protected int totalPrice = 0;
+
 
     public Basket() {
     }
@@ -23,11 +46,10 @@ public class Basket {
     }
 
     public void printCart() {
-        int totalPrice = 0;
         System.out.println("Ваша корзина: ");
         for (int i = 0; i < quantities.length; i++) {
             if (quantities[i] != 0) {
-                int currentPrice = prices[i] * quantities[i];
+                currentPrice = prices[i] * quantities[i];
                 totalPrice += currentPrice;
                 System.out.println("Продукт: " + products[i] + ". Цена: " + prices[i] + ". Количество товара: " + quantities[i] + ". Сумма: " + currentPrice);
             }
@@ -45,16 +67,17 @@ public class Basket {
         }
     }
 
-        public static Basket loadFromJSONFile(File file) {
-        Basket basket =null;
+
+    public static Basket loadFromJSONFile(File file) {
+        Basket basket = null;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             StringBuilder stringBuilder = new StringBuilder();
-            String line =null;
-            while ((line = bufferedReader.readLine())!= null){
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
             Gson gson = new Gson();
-            basket = gson.fromJson(stringBuilder.toString(),Basket.class);
+            basket = gson.fromJson(stringBuilder.toString(), Basket.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
